@@ -1,6 +1,7 @@
 package com.interview.programs.linkedlist;
 
-public class AddSubList {
+public class ReverseLinkedList {
+
 	Node head;
 
 	static class Node {
@@ -40,30 +41,6 @@ public class AddSubList {
 		}
 	}
 
-	// insert list at given pos
-	public void insertList(AddSubList list, int key) {
-		Node curr = head;
-		Node prev = null;
-		if (curr != null && curr.data == key) {
-			Node temp = list.head;
-			while (temp.next != null) {
-				temp = temp.next;
-			}
-			temp.next = curr.next;
-		} else {
-			while (curr != null && curr.data != key) {
-				prev = curr;
-				curr = curr.next;
-			}
-			prev.next = list.head;
-			Node temp = prev;
-			while (temp.next != null) {
-				temp = temp.next;
-			}
-			temp.next = curr.next;
-		}
-	}
-
 	// insert node at specifiec position
 	public void insertNode(int pos, int data) {
 		Node newNode = new Node(data);
@@ -89,6 +66,40 @@ public class AddSubList {
 		}
 		curr.next = newNode;
 	}
+	
+	//reverseList
+	public void reverseList() {
+		Node prev = null;
+		Node next = null;
+		Node curr = head;
+		while(curr != null) {
+			next = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = next;
+		}
+		head = prev;
+	}
+	
+	//reverseList at particular node
+		public void reverseList(int k) {
+			Node prev = null;
+			Node next = null;
+			Node curr = head;
+			int counter = 0;
+			while((counter < k) && (curr != null)) {
+				next = curr.next;
+				curr.next = prev;
+				prev = curr;
+				curr = next;
+				counter++;
+			}
+			head = prev;
+			while(prev.next!=null) {
+				prev = prev.next;
+			}
+			prev.next = curr;
+		}
 
 	// printlist
 	public void printList() {
@@ -101,30 +112,15 @@ public class AddSubList {
 	}
 
 	public static void main(String[] args) {
-		AddSubList list = new AddSubList();
+		ReverseLinkedList list = new ReverseLinkedList();
 		list.push(1);
 		list.append(2);
 		list.append(3);
 		list.append(4);
 		list.printList();
-		list.deleteNode(2);
 		System.out.println();
+		list.reverseList(2);
 		list.printList();
-		list.insertNode(3, 5);
-		System.out.println();
-		list.printList();
-
-		// Create a new list
-		AddSubList list1 = new AddSubList();
-		list1.push(6);
-		list1.append(7);
-		list1.append(8);
-		System.out.println();
-		list1.printList();
-
-		list.insertList(list1, 5);
-		System.out.println();
-		list.printList();
-
 	}
+
 }
