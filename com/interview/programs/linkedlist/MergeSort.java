@@ -1,6 +1,7 @@
 package com.interview.programs.linkedlist;
 
-public class AddSubList {
+public class MergeSort {
+
 	Node head;
 
 	static class Node {
@@ -40,31 +41,6 @@ public class AddSubList {
 		}
 	}
 
-	// insert list at given pos
-	public void insertList(AddSubList list, int key) {
-		Node curr = head;
-		Node prev = null;
-		if (curr != null && curr.data == key) {
-			curr = curr.next;
-			Node temp = list.head;
-			while (temp.next != null) {
-				temp = temp.next;
-			}
-			temp.next = curr;
-		} else {
-			while (curr != null && curr.data != key) {
-				prev = curr;
-				curr = curr.next;
-			}
-			prev.next = list.head;
-			Node temp = prev;
-			while (temp.next != null) {
-				temp = temp.next;
-			}
-			temp.next = curr.next;
-		}
-	}
-
 	// insert node at specifiec position
 	public void insertNode(int pos, int data) {
 		Node newNode = new Node(data);
@@ -90,6 +66,53 @@ public class AddSubList {
 		}
 		curr.next = newNode;
 	}
+	
+	public Node sort(Node curr) {
+		if(curr == null || curr.next == null) {
+			return curr;
+		}
+		Node mid = getMiddle(curr);
+		Node nextNode = mid.next;
+		
+		mid.next = null;
+		
+		Node l = sort(curr);
+		Node r = sort(nextNode);
+		
+		Node list = mergeSort(l,r);
+		return list;
+	}
+	
+	public Node mergeSort(Node l, Node r) {
+		Node res = null;
+		if(l == null) {
+			return r;
+		}
+		if(r == null) {
+			return l;
+		}
+		
+		if(l.data <= r.data) {
+			res = l;
+			res.next = mergeSort(l.next, r);
+		}else {
+			res = r;
+			res.next = mergeSort(l,r.next);
+		}
+		return res;
+	}
+	
+	public Node getMiddle(Node temp) {
+		Node slow = temp;
+		Node fast = temp;
+		while(fast.next!=null && fast.next.next!=null) {
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		
+		return slow;
+		
+	}
 
 	// printlist
 	public void printList() {
@@ -100,32 +123,24 @@ public class AddSubList {
 		}
 
 	}
+	
+	public void printList(Node curr) {
+		while (curr != null) {
+			System.out.print(curr.data + "->");
+			curr = curr.next;
+		}
+	}
 
 	public static void main(String[] args) {
-		AddSubList list = new AddSubList();
-		list.push(1);
-		list.append(2);
-		list.append(3);
-		list.append(4);
-		list.printList();
-		list.deleteNode(2);
-		System.out.println();
-		list.printList();
-		list.insertNode(3, 5);
-		System.out.println();
-		list.printList();
-
-		// Create a new list
-		AddSubList list1 = new AddSubList();
-		list1.push(6);
-		list1.append(7);
-		list1.append(8);
-		System.out.println();
-		list1.printList();
-
-		list.insertList(list1, 1);
-		System.out.println();
-		list1.printList();
-
+		MergeSort list = new MergeSort();
+		list.push(15);
+		list.push(10);
+		list.push(5);
+		list.push(20);
+		list.push(3);
+		list.push(2);
+		list.head = list.sort(list.head);
+		list.printList(list.head);
 	}
+
 }
